@@ -1,6 +1,9 @@
+// +build linux
+
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 	"os/exec"
@@ -11,8 +14,16 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
+	var mountProc bool
+	flag.BoolVar(&mountProc, "withproc", mountProc, "mount /proc inside container (docker doesn't need this)")
+	flag.Parse()
+	if len(flag.Args()) == 0 {
 		log.Fatal("no command to run")
+	}
+	if mountProc {
+		if err := syscall.Mount("proc", "/proc", "proc", 0, ""); err != nil {
+			log.Fatal("failed to mount /proc: " + err.Error())
+		}
 	}
 	sigch := make(chan os.Signal, 1)
 	signal.Notify(sigch,
@@ -29,7 +40,7 @@ func main() {
 			ps.Signal(sig)
 		}
 	}()
-	for _, arg := range os.Args[1:] {
+	for _, arg := range flag.Args() {
 		cmd := exec.Command(arg)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
