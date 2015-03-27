@@ -30,6 +30,7 @@ func main() {
 		syscall.SIGHUP,
 		syscall.SIGINT,
 		syscall.SIGTERM,
+		syscall.SIGQUIT,
 		syscall.SIGUSR1,
 		syscall.SIGUSR2,
 	)
