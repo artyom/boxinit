@@ -2,7 +2,7 @@
 
 Features:
 
-- relay signals to child processes: INT, HUP, TERM, USR1, USR2
+- relay signals to child processes: INT, HUP, TERM, QUIT, USR1, USR2
 - run a couple of child processes and exit if any of them returns, terminating all other children
 - adopt orphaned processes and reap them when they finish (solve zombie processes issue)
 
