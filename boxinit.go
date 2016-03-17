@@ -54,10 +54,12 @@ func main() {
 	}
 	finishing := false
 	var ws syscall.WaitStatus
+	var mainExitCode int
 	for {
 		pid, err := syscall.Wait4(-1, &ws, 0, nil)
 		if err != nil {
-			log.Fatal(err)
+			log.Print(err)
+			os.Exit(mainExitCode)
 		}
 		if ps.HasPid(pid) {
 			if finishing {
@@ -67,6 +69,7 @@ func main() {
 			}
 			log.Printf("watched pid %d finished (%s), terminating others",
 				pid, exitReason(ws))
+			mainExitCode = ws.ExitStatus()
 			ps.Signal(syscall.SIGCONT)
 			ps.Signal(syscall.SIGTERM)
 			finishing = true
