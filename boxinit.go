@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"sync"
 	"syscall"
+	"time"
 )
 
 func main() {
@@ -73,6 +74,10 @@ func main() {
 			ps.Signal(syscall.SIGCONT)
 			ps.Signal(syscall.SIGTERM)
 			finishing = true
+			time.AfterFunc(10*time.Second, func() {
+				log.Print("killing unfinished processes")
+				ps.Signal(syscall.SIGKILL)
+			})
 		}
 	}
 }
