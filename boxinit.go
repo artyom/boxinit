@@ -46,6 +46,8 @@ func main() {
 		cmd := exec.Command(arg)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
+		cmd.Dir = "/"
+		cmd.SysProcAttr = &syscall.SysProcAttr{Pdeathsig: syscall.SIGKILL}
 		if err := cmd.Start(); err != nil {
 			ps.Signal(syscall.SIGCONT)
 			ps.Signal(syscall.SIGTERM)
