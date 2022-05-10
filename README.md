@@ -27,4 +27,4 @@ Configure your `Dockerfile` as following:
 	COPY service*.sh boxinit /init/
 	CMD [ "/init/boxinit", "/init/service1.sh", "/init/service2.sh" ]
 
-This way `boxinit` would be your PID-1 process inside container, would relay essential signals to both services and would exit if either of them finish, allowing you to restart/heal contaier.
+This way `boxinit` would be your PID-1 process inside container, would relay essential signals to both services and would exit if either of them finish, allowing you to restart/heal container.
